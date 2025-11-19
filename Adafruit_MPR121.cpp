@@ -57,14 +57,10 @@ bool Adafruit_MPR121::begin(uint8_t i2caddr, TwoWire *theWire,
   }
   i2c_dev = new Adafruit_I2CDevice(i2caddr, theWire);
 
-  Serial.println("Adafruit_I2CDevice setup..");
   if (!i2c_dev->begin()) {
-    Serial.println("i2c_dev begin failed..");
     return false;
   }
-  Serial.println("done.");
 
-  Serial.println("send soft reset..");
   // soft reset
   writeRegister(MPR121_SOFTRESET, 0x63);
   delay(1);
@@ -75,13 +71,10 @@ bool Adafruit_MPR121::begin(uint8_t i2caddr, TwoWire *theWire,
 
   writeRegister(MPR121_ECR, 0x0);
 
-  Serial.print("read: MPR121_CONFIG2 ");
   uint8_t c = readRegister8(MPR121_CONFIG2);
-  Serial.println(c, HEX);
   if (c != 0x24)
     return false;
 
-  Serial.println("write Configuration to sensor ...");
   setThresholds(touchThreshold, releaseThreshold);
   writeRegister(MPR121_MHDR, 0x01);
   writeRegister(MPR121_NHDR, 0x01);
